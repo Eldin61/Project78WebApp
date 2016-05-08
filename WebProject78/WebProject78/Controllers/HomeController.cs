@@ -11,7 +11,7 @@ namespace WebProject78.Controllers
         public ActionResult Index()
         {
             ViewBag.Title="Project 78";
-return View();
+            return View();
         }
     }
 }
