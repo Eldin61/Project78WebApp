@@ -27,7 +27,7 @@
         </div>
         <div class="userList pre-scrollable">
             <ul>
-                <li>naam 1</li>
+                <li onclick="getUser()"><a href="#">naam 1</a></li>
                 <li>naam 2</li>
                 <li>naam 3</li>
                 <li>naam 4</li>
@@ -57,6 +57,18 @@
                 <li>naam 28</li>
             </ul>
         </div>
+        <div class="container">
+            <h2 id="userName"></h2><br>
+            <h3 id="job"></h3><br>
+            <h3 id="status"></h3>
+        </div>
     </div>
 </div>
+<div>
+    <button onclick="reserveSeat()" class="btn-info">Reserve</button>
+</div>
+<div>
+    <h2 id="seatText"></h2>
+</div>
 <script src="@Url.Content("~/js/mapControl.js")"></script>
+<script src="@Url.Content("~/js/userList.js")"></script>
