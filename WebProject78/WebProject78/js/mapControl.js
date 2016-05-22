@@ -69,13 +69,18 @@ img.mapster({
         for (var i = 1; i <= 14; i++) {
             var id = Math.round(Math.random()) + 1;
             arraySeats[i] = id;
-            console.log("Setup seaty #" + i + " " + arraySeats[i]);
+            console.log("Setup seaty id:" + id + " #" + i + " " + arraySeats[i]);
             //img.mapster("set", true, arraySeats[i], renderOpts[arraySeats[i]]);
         }
     },
     
     onClick: onSeatClick
 });
+
+for (var i = 1; i <= 14; i++) {
+    console.log("Setup seator #" + i + " " + arraySeats[i]);
+    img.mapster("set", true, arraySeats[i], renderOpts[arraySeats[i]]);
+}
 
 function onSeatClick(data) {
     // 1. Set previous selected to it's main status
@@ -104,7 +109,7 @@ function reserveSeat() {
     //var selectedSeat = img.mapster('get');
     img.mapster("set", false, selectedSeat[0]);
 
-    img.mapster('set_options', {
+    /*img.mapster('set_options', {
         areas: [
             {
                 key: selectedSeat[0],
@@ -113,14 +118,21 @@ function reserveSeat() {
                 //fillColor: 'ff000c'
             }
         ]
-    });
+    });*/
 
     //TODO: Update change to DB.
     arraySeats[selectedSeat[0]] = 2;
 
+    //updates changes to selectedSeat
+    selectedSeat[1] = 2;
+
+    console.log(selectedSeat);
+
     //TODO: Maybe Deselect the seat.
 
-    document.getElementById('seatText').innerHTML = "Reserved seat: " + selectedSeat;
+    img.mapster('set', true, selectedSeat[0], renderOpts[selectedSeat[1]]);
+
+    document.getElementById('seatText').innerHTML = "Reserved seat: " + selectedSeat[0];
 }
 
 //Method for checking seats every 10 seconds.
