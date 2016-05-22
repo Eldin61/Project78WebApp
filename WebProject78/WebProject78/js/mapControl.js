@@ -69,7 +69,7 @@ img.mapster({
         for (var i = 1; i <= 14; i++) {
             var id = Math.round(Math.random()) + 1;
             arraySeats[i] = id;
-            console.log("Setup seaty #" + i + " " + arraySeats[i]);
+            console.log("Setup seat #" + i + " " + arraySeats[i]);
             //img.mapster("set", true, arraySeats[i], renderOpts[arraySeats[i]]);
         }
     },
