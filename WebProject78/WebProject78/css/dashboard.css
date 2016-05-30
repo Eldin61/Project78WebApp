@@ -5,6 +5,11 @@
     overflow-x: hidden;
 }
 
+.roomInfoBox{
+    margin-top:2em;
+    width:100%;
+}
+
 ::-webkit-scrollbar {
     width: 12px;
 }

@@ -22,41 +22,21 @@
         </map>
     </div>
     <div class="col-lg-3 col-sm-12">
-        <div>
-            
-        </div>
         <div class="userList pre-scrollable">
             <ul>
-                <li>naam 1</li>
-                <li>naam 2</li>
-                <li>naam 3</li>
-                <li>naam 4</li>
-                <li>naam 5</li>
-                <li>naam 6</li>
-                <li>naam 7</li>
-                <li>naam 8</li>
-                <li>naam 9</li>
-                <li>naam 10</li>
-                <li>naam 11</li>
-                <li>naam 12</li>
-                <li>naam 13</li>
-                <li>naam 14</li>
-                <li>naam 15</li>
-                <li>naam 16</li>
-                <li>naam 17</li>
-                <li>naam 18</li>
-                <li>naam 19</li>
-                <li>naam 20</li>
-                <li>naam 21</li>
-                <li>naam 22</li>
-                <li>naam 23</li>
-                <li>naam 24</li>
-                <li>naam 25</li>
-                <li>naam 26</li>
-                <li>naam 27</li>
-                <li>naam 28</li>
-            </ul>
+                @foreach (var name in @ViewBag.List)
+                {
+                    <li href="#">@name</li>
+                }
+            </ul>           
         </div>
     </div>
-</div>
+    <div class="col-lg-3 col-sm-12">
+        <div class="roomInfoBox">
+            <h3>Zaal info</h3>
+            <p>Gemiddelde warmte: <br />
+            @ViewBag.avgtest</p>
+            <p>Gemiddelde aantal decibel:</p>   
+        </div>                          
+    </div>
 <script src="@Url.Content("~/js/mapControl.js")"></script>
