@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>testing stuffs</p>
+<ul>
+    @foreach (var item in @ViewBag.List)
+    {
+        <li>@item</li>    
+    }
+</ul>
+
+    <form method="post" action="@Url.Action("logintest", "Test")">
+        <input name="username" type="text" />
+        <input name="password" type="password" />
+        <input type="submit" value="Login" />
+    </form>
+

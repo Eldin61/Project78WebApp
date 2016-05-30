@@ -1,1 +1,3 @@
 WebProject78/.vs/
+*.pdb
+WebProject78/WebProject78/obj/Debug/WebProject78.dll
