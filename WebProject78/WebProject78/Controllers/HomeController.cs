@@ -12,9 +12,22 @@ namespace WebProject78.Controllers
     {
         public ActionResult Index()
         {
+
             ViewBag.Title="Project 78";
             employeeList();
             roomInfo();
+
+
+            //List<String> fakeUserList = new List<string>();
+            //fakeUserList.Add("Eldin");
+            //fakeUserList.Add("Daniel");
+            //fakeUserList.Add("Orlando");
+            //fakeUserList.Add("Mark");
+            //fakeUserList.Add("Rene");
+
+            //ViewBag.userList = fakeUserList;
+            //ViewBag.Title = "Project 78";
+
             return View();
         }
 

@@ -24,19 +24,44 @@
     <div class="col-lg-3 col-sm-12">
         <div class="userList pre-scrollable">
             <ul>
+
                 @foreach (var name in @ViewBag.List)
                 {
                     <li href="#">@name</li>
                 }
             </ul>           
+
+                @*@foreach (var user in ViewBag.userList)
+                {
+                    <li>@user</li>
+                }
+            </ul>*@
+
+        </div>
+        <div class="container">
+            <h2 id="userName"></h2><br>
+            <h3 id="job"></h3><br>
+            <h3 id="status"></h3>
         </div>
     </div>
-    <div class="col-lg-3 col-sm-12">
+
+    @*<div class="col-lg-3 col-sm-12">
         <div class="roomInfoBox">
             <h3>Zaal info</h3>
             <p>Gemiddelde warmte: <br />
             @ViewBag.avgtest</p>
             <p>Gemiddelde aantal decibel:</p>   
         </div>                          
-    </div>
+    </div>*@
 <script src="@Url.Content("~/js/mapControl.js")"></script>
+
+</div>
+<div>
+    <button onclick="reserveSeat()" class="btn-info">Reserve</button>
+</div>
+<div>
+    <h2 id="seatText"></h2>
+</div>
+<script src="@Url.Content("~/js/mapControl.js")"></script>
+<script src="@Url.Content("~/js/userList.js")"></script>
+
