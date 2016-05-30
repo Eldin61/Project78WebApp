@@ -163,3 +163,4 @@ C:\Users\Orlando\Documents\GitHub\Project78WebApp\WebProject78\WebProject78\bin\
 C:\Users\Orlando\Documents\GitHub\Project78WebApp\WebProject78\WebProject78\obj\Debug\WebProject78.csprojResolveAssemblyReference.cache
 C:\Users\Orlando\Documents\GitHub\Project78WebApp\WebProject78\WebProject78\obj\Debug\WebProject78.dll
 C:\Users\Orlando\Documents\GitHub\Project78WebApp\WebProject78\WebProject78\obj\Debug\WebProject78.pdb
+C:\Users\Orlando\Documents\GitHub\Project78WebApp\WebProject78\WebProject78\bin\MySql.Data.dll
