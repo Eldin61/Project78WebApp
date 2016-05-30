@@ -59,47 +59,58 @@ var captions = {
 
 img.mapster({
     mapKey: 'seat',
-    mapValue: 'seatState',
+    //mapValue: 'seatState',
     isSelectable: false,
+    highlight: false,
+    sortList: true,
 
     //When the map is finished setting up this function is called to give all the seats a random state
     //TODO: Automatically goes through all the seats and grabs the state from the DB.
-    //TODO: Update the seat image to the correct status.
     onConfigured: function () {
+        console.log(this);
         for (var i = 1; i <= 14; i++) {
             var id = Math.round(Math.random()) + 1;
             arraySeats[i] = id;
-            console.log("Setup seaty id:" + id + " #" + i + " " + arraySeats[i]);
-            //img.mapster("set", true, arraySeats[i], renderOpts[arraySeats[i]]);
+            console.log("Setup seat id:" + i + " status:" + arraySeats[i]);
+            img.mapster("set", true, String(i), renderOpts[arraySeats[i]]);
         }
     },
+
+    /*onGetList: function(data) {
+        console.log("List!");
+        for (var seat in data) {
+            seat
+        }
+    },*/
     
     onClick: onSeatClick
 });
 
-for (var i = 1; i <= 14; i++) {
-    console.log("Setup seator #" + i + " " + arraySeats[i]);
-    img.mapster("set", true, arraySeats[i], renderOpts[arraySeats[i]]);
-}
-
 function onSeatClick(data) {
-    // 1. Set previous selected to it's main status
-    if (selectedSeat[0] != null) {
-        img.mapster("set", false, selectedSeat[0]);
-        if (selectedSeat[1] != null) {
-            img.mapster("set", true, selectedSeat[0], renderOpts[selectedSeat[1]]);
+    if (selectedSeat[0] !== data.key) {
+        // 1. Set previous selected to it's main status
+        if (selectedSeat[0] != null) {
+            img.mapster("set", false, selectedSeat[0]);
+            if (selectedSeat[1] != null) {
+                img.mapster("set", true, selectedSeat[0], renderOpts[selectedSeat[1]]);
+            }
         }
+
+        // 2. Store the currently selected seat and it's main status.
+        selectedSeat[0] = data.key;
+        selectedSeat[1] = arraySeats[selectedSeat[0]] || null;
+
+        console.log("Selected seat: " + selectedSeat[0] + ", state: " + selectedSeat[1]);
+
+        // 3. Update the appearance of the selected seat.
+        img.mapster('set', false, selectedSeat[0]);//, renderOpts[selectedSeat[1]]);
+        img.mapster('set', true, selectedSeat[0], renderOpts[0]);
+    } else {
+        img.mapster("set", 'false', selectedSeat[0]);
+        img.mapster("set", true, selectedSeat[0], renderOpts[selectedSeat[1]]);
+        selectedSeat[0] = null;
+        selectedSeat[1] = null;
     }
-
-    // 2. Store the currently selected seat and it's main status.
-    selectedSeat[0] = data.key;
-    selectedSeat[1] = arraySeats[selectedSeat[0]] || null;
-
-    console.log("Selected seat: " + selectedSeat[0] + ", state: " + selectedSeat[1]);
-
-    // 3. Update the appearance of the selected seat.
-    img.mapster('set', false, selectedSeat[0], renderOpts[selectedSeat[1]]);
-    img.mapster('set', true, selectedSeat[0], renderOpts[0]);
 }
 
 function reserveSeat() {
@@ -109,17 +120,6 @@ function reserveSeat() {
     //var selectedSeat = img.mapster('get');
     img.mapster("set", false, selectedSeat[0]);
 
-    /*img.mapster('set_options', {
-        areas: [
-            {
-                key: selectedSeat[0],
-                options: renderOpts[2]
-                //staticState: true,
-                //fillColor: 'ff000c'
-            }
-        ]
-    });*/
-
     //TODO: Update change to DB.
     arraySeats[selectedSeat[0]] = 2;
 
@@ -128,7 +128,6 @@ function reserveSeat() {
 
     console.log(selectedSeat);
 
-    //TODO: Maybe Deselect the seat.
 
     img.mapster('set', true, selectedSeat[0], renderOpts[selectedSeat[1]]);
 
