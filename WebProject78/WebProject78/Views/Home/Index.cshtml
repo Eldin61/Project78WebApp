@@ -25,7 +25,7 @@
         <div class="userList pre-scrollable">
             <ul>
 
-                @foreach (var name in @ViewBag.List)
+                @foreach (var name in @ViewBag.nameList)
                 {
                     <li href="#">@name</li>
                 }
@@ -38,21 +38,21 @@
             </ul>*@
 
         </div>
-        <div class="container">
+        @*<div class="container">
             <h2 id="userName"></h2><br>
             <h3 id="job"></h3><br>
             <h3 id="status"></h3>
         </div>
-    </div>
+    </div>*@
 
-    @*<div class="col-lg-3 col-sm-12">
+    <div class="col-lg-3 col-sm-12">
         <div class="roomInfoBox">
             <h3>Zaal info</h3>
             <p>Gemiddelde warmte: <br />
             @ViewBag.avgtest</p>
             <p>Gemiddelde aantal decibel:</p>   
         </div>                          
-    </div>*@
+    </div>
 <script src="@Url.Content("~/js/mapControl.js")"></script>
 
 </div>

@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace WebProject78.Controllers
 {
@@ -33,35 +35,22 @@ namespace WebProject78.Controllers
 
         public void employeeList()
         {
-            //moet nog netter
-            String constring = "server=localhost;user id=root;database=classicmodels; password=root";
-            MySqlConnection con = new MySqlConnection(constring);
+            WebClient c = new WebClient();
+            var data = c.DownloadString("http://145.24.222.188/p/index.php/werknemers");
+            System.Diagnostics.Debug.WriteLine(data);
 
-            try {
-                con.Open();
+            JObject o = JObject.Parse(data);
+            JArray d = (JArray)o["data"]; //pakt alleen de data, verder nog index en item nodig
 
-                String sqlcmd = "SELECT contactFirstName, contactLastName FROM customers";
-                MySqlCommand cmd = new MySqlCommand(sqlcmd, con);
-                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                adp.Fill(ds);
-
-                List<String> list = ds.Tables[0].AsEnumerable()
-                    .Select(r => r.Field<String>("contactFirstName") + " " +  r.Field<String>("contactLastName"))
-                    .ToList();
-
-                ViewBag.List = list;
-            } catch(MySqlException e)
+            List<String> names = new List<String>();
+            for(var i = 0; i < d.Count; i++)
             {
-                System.Diagnostics.Debug.WriteLine("oops");
-                System.Diagnostics.Debug.WriteLine(e.ToString());
-
-            }
-            finally
-            {
-                con.Close();
+                names.Add(d[i]["voornaam"] + " " + d[i]["achternaam"]);               
             }
 
+            ViewBag.nameList = names; 
+            System.Diagnostics.Debug.WriteLine("testcount: " + d.Count);
+            //System.Diagnostics.Debug.WriteLine("Achternaam: " + d[0]["achternaam"]);
         }
 
         public void roomInfo()

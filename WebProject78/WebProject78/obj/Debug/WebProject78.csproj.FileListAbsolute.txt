@@ -218,3 +218,4 @@ C:\Users\Eldin\Documents\Project78WebApp\WebProject78\WebProject78\bin\Microsoft
 C:\Users\Eldin\Documents\Project78WebApp\WebProject78\WebProject78\obj\Debug\WebProject78.csprojResolveAssemblyReference.cache
 C:\Users\Eldin\Documents\Project78WebApp\WebProject78\WebProject78\obj\Debug\WebProject78.dll
 C:\Users\Eldin\Documents\Project78WebApp\WebProject78\WebProject78\obj\Debug\WebProject78.pdb
+C:\Users\Orlando\Documents\GitHub\Project78WebApp\WebProject78\WebProject78\bin\MySql.Data.dll
