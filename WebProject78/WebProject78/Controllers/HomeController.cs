@@ -17,8 +17,6 @@ namespace WebProject78.Controllers
 
             ViewBag.Title="Project 78";
             employeeList();
-            roomInfo();
-
 
             //List<String> fakeUserList = new List<string>();
             //fakeUserList.Add("Eldin");
@@ -42,45 +40,48 @@ namespace WebProject78.Controllers
             JObject o = JObject.Parse(data);
             JArray d = (JArray)o["data"]; //pakt alleen de data, verder nog index en item nodig
 
-            List<String> names = new List<String>();
+            List<Tuple<JToken, String>> names = new List<Tuple<JToken, String>>();
             for(var i = 0; i < d.Count; i++)
             {
-                names.Add(d[i]["voornaam"] + " " + d[i]["achternaam"]);               
-            }
 
-            ViewBag.nameList = names; 
+                names.Add(Tuple.Create(d[i]["UID"] ,d[i]["voornaam"] + " " + d[i]["achternaam"]));               
+            }
+            var tuplenames = names.Select(t => t.Item2).ToList(); //haalt namen uit de tuples met linq
+
+            seatUsers();
+            //ViewBag.nameList = tuplenames; 
             System.Diagnostics.Debug.WriteLine("testcount: " + d.Count);
             //System.Diagnostics.Debug.WriteLine("Achternaam: " + d[0]["achternaam"]);
         }
 
-        public void roomInfo()
+        public List<String> seatUsers()
         {
-            String constring = "server=localhost;user id=root;database=classicmodels; password=root";
-            Double avg = 0;
+            List<Tuple<String, String>> seats = new List<Tuple<String, String>>();
 
-            MySqlConnection con = new MySqlConnection(constring);
+            WebClient c = new WebClient();
+            var data = c.DownloadString("http://145.24.222.188/p/index.php/arduinocheck");
 
-            try
+            JObject o = JObject.Parse(data);
+            JArray d = (JArray)o["data"];
+
+            for(var i = 0; i < d.Count; i++)
             {
-                con.Open();
-
-                String sqlCmd = "SELECT  AVG(priceEach) FROM orderdetails";
-                MySqlCommand cmd = new MySqlCommand(sqlCmd, con);
-
-                avg = Double.Parse(cmd.ExecuteScalar()+ "");
-
-                ViewBag.avgtest = avg;
-
-            }
-            catch (MySqlException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.ToString());
-            }
-            finally
-            {
-                con.Close();
+                seats.Add(Tuple.Create(d[i]["B"].ToString(), d[i]["U"].ToString()));
             }
 
+            for(var i = 0; i < seats.Count; i++)
+            {
+                if(seats[i].Item1 == "0")
+                {
+                    seats.RemoveAt(i);
+                }
+            }
+            var userid = seats.Select(t => t.Item2).ToList();
+
+            ViewBag.nameList = userid;
+            return userid;
         }
+
+  
     }
 }
