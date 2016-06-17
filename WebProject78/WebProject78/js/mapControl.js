@@ -1,5 +1,6 @@
 ﻿var img = $('#room1');
-
+var CLIENT_ID = '534651979725-0b4pnajijvgshq3k20j1vfu9muba86ka.apps.googleusercontent.com';
+var SCOPES = ["https://www.googleapis.com/auth/calendar"];
 function Seat(number, state) {
     this.number = number;
     //may only be "free", "reserved", "taken"
@@ -142,10 +143,101 @@ function onSeatClick(data) {
     }
 }
 
-function reserveSeat() {
+var chairId = null;
+/**
+     * Check if current user has authorized this application.
+     */
+    function checkAuth() {
+        gapi.auth.authorize(
+          {
+              'client_id': CLIENT_ID,
+              'scope': SCOPES.join(' '),
+              'immediate': true
+          }, handleAuthResult);
+    }
+
+    /**
+     * Handle response from authorization server.
+     *
+     * @param {Object} authResult Authorization result.
+     */
+    function handleAuthResult(authResult) {       
+            loadCalendarApi();       
+    }
+
+    /**
+     * Initiate auth flow in response to user clicking authorize button.
+     *
+     * @param {Event} event Button click event.
+     */
+    function handleCalendarInsert(chair) {
+        chairId = chair;
+        gapi.auth.authorize(
+          { client_id: CLIENT_ID, scope: SCOPES, immediate: false },
+          handleAuthResult);
+        return false;
+    }
+
+    /**
+     * Load Google Calendar client library. List upcoming events
+     * once client library is loaded.
+     */
+    function loadCalendarApi() {
+        gapi.client.load('calendar', 'v3', createEvent);
+    }
+    
+
+    /**
+     * Print the summary and start datetime/date of the next ten events in
+     * the authorized user's calendar. If no events are found an
+     * appropriate message is printed.
+     */
+    function createEvent() {        
+       
+        var event = {
+            'summary': 'Google I/O 2015',
+            'location': '800 Howard St., San Francisco, CA 94103',
+            'description': 'A chance to hear more about Google\'s developer products.',
+            'start': {
+                'dateTime': '2015-05-28T09:00:00-07:00',
+                'timeZone': 'America/Los_Angeles'
+            },
+            'end': {
+                'dateTime': '2015-05-28T09:00:00-08:00',
+                'timeZone': 'America/Los_Angeles'
+            }
+            
+        };
+
+        var request = gapi.client.calendar.events.insert({
+            'calendarId': 'primary',
+            'resource': event
+        });
+
+        request.execute(function (event) {
+            console.log('Event created.');
+        });
+    }
+
+    /**
+     * Append a pre element to the body containing the given message
+     * as its text node.
+     *
+     * @param {string} message Text to be placed in pre element.
+     */
+    function appendPre(message) {
+        var pre = document.getElementById('output');
+        var textContent = document.createTextNode(message + '\n');
+        pre.appendChild(textContent);
+    }
+    
+
+
+function reserveSeat() {    
     if (selectedSeat.number == null) {
         return false;
     }
+    handleCalendarInsert(selectedSeat.number);
     //var selectedSeat = img.mapster('get');
     img.mapster("set", false, selectedSeat.number);
 
@@ -161,6 +253,7 @@ function reserveSeat() {
     img.mapster('set', true, selectedSeat.number, renderOpts[selectedSeat.getStateNr()]);
 
     document.getElementById('seatText').innerHTML = "Reserved seat: " + selectedSeat.number;
+   
 }
 
 //Method for checking seats every 10 seconds.
