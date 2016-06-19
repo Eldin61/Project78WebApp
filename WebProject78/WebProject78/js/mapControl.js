@@ -1,6 +1,7 @@
 ﻿var img = $('#room1');
 var CLIENT_ID = '534651979725-0b4pnajijvgshq3k20j1vfu9muba86ka.apps.googleusercontent.com';
 var SCOPES = ["https://www.googleapis.com/auth/calendar"];
+
 function Seat(number, state) {
     this.number = number;
     //may only be "free", "reserved", "taken"
@@ -24,7 +25,7 @@ Seat.prototype.getStateNr = function () {
 var selectedSeat = new Seat();
 
 //stores the state of a seat to the seats key. Like a map.
-var arraySeats = {};
+var arraySeats = [];
 
 // rendering options for the selected selection state
 var selectedopts = {
@@ -78,13 +79,6 @@ var captions = {
     14: ['Seat number 14']
 }
 
-//
-/*for (var i = 1; i <= 14; i++) {
-    arraySeats[i] = Math.round(Math.random()) + 1;
-    console.log("Setup seat #" + i + " " + arraySeats[i]);
-    img.mapster("set", true, i, renderOpts[arraySeats[i]]);
-}*/
-
 img.mapster({
     mapKey: 'seat',
     //mapValue: 'seatState',
@@ -96,9 +90,25 @@ img.mapster({
     //When the map is finished setting up this function is called to give all the seats a random state
     //TODO: Automatically goes through all the seats and grabs the state from the DB.
     onConfigured: function () {
-        for (var i = 1; i <= 14; i++) {
-            var id = Math.round(Math.random()) + 1;
-            arraySeats[i] = new Seat(i, "taken");
+        //var dbSeats = 
+
+        for (var i = 0; i <= 14; i++) {
+            var state = 0;
+
+            switch (i % 3) {
+                case 0:
+                    state = "taken";
+                    break;
+                case 1:
+                    state = "free";
+                    break;
+                case 2:
+                    state = "reserved";
+                    break;
+                default:
+            }
+
+            arraySeats[i] = new Seat(i, state);
             console.log("Setup seat id:" + i + " status:" + arraySeats[i].getStateNr());
             img.mapster("set", true, String(i), renderOpts[arraySeats[i].getStateNr()]);
         }
@@ -115,7 +125,8 @@ img.mapster({
 });
 
 function onSeatClick(data) {
-    if (selectedSeat.number !== data.key) {
+
+    if (selectedSeat.number != data.key) {
         // 1. Set previous selected to it's main status
         if (selectedSeat.number != null) {
             img.mapster("set", false, selectedSeat.number);
@@ -124,12 +135,10 @@ function onSeatClick(data) {
             }
         }
 
-        console.log("bla " + data.key);
-
         // 2. Store the currently selected seat and it's main status.
         selectedSeat.number = data.key;
-        console.log($.grep(arraySeats, function (e, i) { return e.number == data.key; })[0]);
-        selectedSeat.state = $.grep(arraySeats, function (e, i) { return e.number == data.key; })[0]; //arraySeats.[selectedSeat.number] || null;
+        //console.log($.grep(arraySeats, function (e) { return  e.number == data.key})[0]);
+        selectedSeat.state = $.grep(arraySeats, function (e) { return e.number == data.key; })[0].state;
 
         console.log("Selected seat: " + selectedSeat.number + ", state: " + selectedSeat.state);
 
@@ -137,8 +146,9 @@ function onSeatClick(data) {
         img.mapster('set', false, selectedSeat.number);//, renderOpts[selectedSeat[1]]);
         img.mapster('set', true, selectedSeat.number, renderOpts[0]);
     } else {
+        console.log("nr: " + selectedSeat.number + "stateNr: " + selectedSeat.getStateNr());
         img.mapster("set", false, selectedSeat.number);
-        img.mapster("set", true, selectedSeat.number, renderOpts[selectedSeat.getStateNr]);
+        img.mapster("set", true, selectedSeat.number, renderOpts[selectedSeat.getStateNr()]);
         selectedSeat = new Seat();
     }
 }
@@ -234,7 +244,8 @@ var chairId = null;
 
 
 function reserveSeat() {    
-    if (selectedSeat.number == null) {
+    if (selectedSeat.number == null || selectedSeat.state !== "free") {
+        document.getElementById('seatText').innerHTML = "Select a free seat.";
         return false;
     }
     handleCalendarInsert(selectedSeat.number);
@@ -268,3 +279,13 @@ function checkSeatStatus(keySeat) {
     
     //TODO: Add a method to check the seat in the database and update it if it changed.
 }
+
+$('area').qtip({
+    content: {
+        text: 'Just some text here!'
+    },
+    position: {
+        my: 'left center',
+        at: 'right center'
+    }
+});
