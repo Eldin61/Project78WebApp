@@ -5,6 +5,10 @@
     overflow-x: hidden;
 }
 
+.offline {
+    color:rgb(128, 128, 128);
+}
+
 .roomInfoBox{
     margin-top:2em;
     width:100%;
