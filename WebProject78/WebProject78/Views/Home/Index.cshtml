@@ -56,8 +56,8 @@
             <div class="roomInfoBox">
                 <h3>Zaal info</h3>
                 <p>
-                    Gemiddelde warmte: <br />
-                    @ViewBag.avgtest
+                    Gemiddelde warmte: 22 C<br />
+                    
                 </p>
                 <p>Gemiddelde aantal decibel:</p>
             </div>
@@ -76,7 +76,7 @@
 </div>
 <div class="container">
     <h2 id="userName"></h2></br>
-    <p id="email"></p></br>
+    <p id="email"></p>
     <p id="rol"></p>
     <p id="seatId"></p>
 </div>
@@ -88,7 +88,14 @@
 
             var rol = 'programmeur';
             var email = name.replace(/ /g, '') + "@@TamTam.nl";
-            var seat = getRandomInt(1, 14);
+            var seat;
+            if (name == "Mark Hartgring") {
+                seat = "3";
+            } else if (name == "Matt Damon") {
+                seat = "2";
+            } else {
+                seat = getRandomInt(1, 14);
+            }
 
             document.getElementById('userName').innerHTML = name;
             document.getElementById('email').innerHTML = 'Email: ' + email;
