@@ -25,14 +25,17 @@
         <div class="userList pre-scrollable">
             <ul>
 
-                @foreach (var name in @ViewBag.onlineList)
-                {
-                    <li href="#">@name</li>
+                @{ 
+                    foreach (var name in ViewBag.onlineList)
+                    {
+                        <li onclick="testing('@name')"><a href="#">@name</a></li>
+                    }
                 }
                 @foreach (var name in @ViewBag.offlineList)
                 {
                     <li class="offline" href="#">@name</li>
                 }
+               <li id="testId">bound to change</li>
             </ul>
 
             @*@foreach (var user in ViewBag.userList)
@@ -68,6 +71,33 @@
     <div>
         <h2 id="seatText"></h2>
     </div>
-    <script src="@Url.Content("~/js/mapControl.js")"></script>
-    <script src="@Url.Content("~/js/userList.js")"></script>
+    
+    
+</div>
+<div class="container">
+    <h2 id="userName"></h2></br>
+    <p id="email"></p></br>
+    <p id="rol"></p>
+    <p id="seatId"></p>
+</div>
+<script src="@Url.Content("~/js/mapControl.js")"></script>
+<script src="@Url.Content("~/js/userList.js")"></script>
+<script>
+        function testing(data) {
+            var name = data;
 
+            var rol = 'programmeur';
+            var email = name.replace(/ /g, '') + "@@TamTam.nl";
+            var seat = getRandomInt(1, 14);
+
+            document.getElementById('userName').innerHTML = name;
+            document.getElementById('email').innerHTML = 'Email: ' + email;
+            document.getElementById('rol').innerHTML = 'Job: ' + rol;
+            document.getElementById('seatId').innerHTML = 'Zitplaats: ' + seat;
+
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+</script>

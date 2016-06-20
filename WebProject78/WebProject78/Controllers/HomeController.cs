@@ -7,6 +7,8 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using WebProject78.Models;
 
 namespace WebProject78.Controllers
 {
@@ -28,14 +30,27 @@ namespace WebProject78.Controllers
 
             JObject o = JObject.Parse(data);
             JArray d = (JArray)o["data"]; //pakt alleen de data, verder nog index en item nodig
+            Dictionary<String, Dictionary<String, String>> keyValueUser = new Dictionary<string, Dictionary<String, String>>();
+            var confirmedusers = seatUsers();
+            var employees = new List<Employee>();
 
             List<Tuple<String, String>> names = new List<Tuple<String, String>>();
             for (var i = 0; i < d.Count; i++)
             {
 
                 names.Add(Tuple.Create(d[i]["UID"].ToString(), d[i]["voornaam"] + " " + d[i]["achternaam"]));
+                Dictionary<String, String> temp = new Dictionary<string, string>();
+                
+                var email = d[i]["email"].ToString();
+                var rol = d[i]["rol"].ToString();
+                var uid = d[i]["UID"].ToString();
+                var telnr = d[i]["telefoonnummer"].ToString();
+                var beschrijving = d[i]["beschrijving"].ToString();
+                var voornaam = d[i]["voornaam"].ToString();
+                var achternaam = d[i]["achternaam"].ToString();
+                employees.Add(new Employee(voornaam, achternaam, uid, email, beschrijving, telnr));
             }
-            var confirmedusers = seatUsers();
+            
             var onlineusers = new List<String>();
             var offlineusers = new List<String>();
             var idlist = names.Select(t => t.Item1).ToList();
@@ -59,16 +74,27 @@ namespace WebProject78.Controllers
 
                 }
             }
+            //var onlineTest = confirmedusers.Intersect(idlist);
+            //foreach(var user in onlineTest)
+            //{
+            //    onlineusers.Add(user);
+            //}
+            // zoiets zou mooier zijn en kunnen werken als seatUsers() namen returned.
+            
 
             offlineusers = names.Select(t => t.Item2).ToList();
 
             onlineusers.Sort();
             offlineusers.Sort();
 
+            
+
             var tuplenames = names.Select(t => t.Item2).ToList(); //haalt namen uit de tuples met linq
 
             ViewBag.onlineList = onlineusers;
             ViewBag.offlineList = offlineusers;
+            ViewBag.testId = idlist;
+            ViewBag.testList = employees;
 
         }
 

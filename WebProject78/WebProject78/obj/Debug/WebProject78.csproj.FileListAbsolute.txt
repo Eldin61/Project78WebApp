@@ -275,3 +275,4 @@ C:\Users\MarkGame\Desktop\Project78WebApp\WebProject78\WebProject78\bin\Microsof
 C:\Users\MarkGame\Desktop\Project78WebApp\WebProject78\WebProject78\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\MarkGame\Desktop\Project78WebApp\WebProject78\WebProject78\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\MarkGame\Desktop\Project78WebApp\WebProject78\WebProject78\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\Eldin\Documents\GitHub\Project78WebApp\WebProject78\WebProject78\bin\MySql.Data.dll
