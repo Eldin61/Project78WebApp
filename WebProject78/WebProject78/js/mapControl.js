@@ -93,7 +93,8 @@ img.mapster({
         //var dbSeats = 
 
         for (var i = 0; i <= 14; i++) {
-            var state = 0;
+            //test code for alternating seat state.
+            /*var state = 0;
 
             switch (i % 3) {
                 case 0:
@@ -108,7 +109,9 @@ img.mapster({
                 default:
             }
 
-            arraySeats[i] = new Seat(i, state);
+            arraySeats[i] = new Seat(i, state);*/
+
+            arraySeats[i] = new Seat(i, "free");
             console.log("Setup seat id:" + i + " status:" + arraySeats[i].getStateNr());
             img.mapster("set", true, String(i), renderOpts[arraySeats[i].getStateNr()]);
         }
@@ -260,15 +263,11 @@ function reserveSeat() {
 
     console.log(selectedSeat);
 
-
     img.mapster('set', true, selectedSeat.number, renderOpts[selectedSeat.getStateNr()]);
 
     document.getElementById('seatText').innerHTML = "Reserved seat: " + selectedSeat.number;
    
 }
-
-//Method for checking seats every 10 seconds.
-//setInterval(checkAllSeatStatus, 10000);
 
 function checkAllSeatStatus() {
     //TODO: Get all visible seats and use checkSeatStatus on them.
@@ -280,12 +279,47 @@ function checkSeatStatus(keySeat) {
     //TODO: Add a method to check the seat in the database and update it if it changed.
 }
 
-$('area').qtip({
-    content: {
-        text: 'Just some text here!'
-    },
-    position: {
-        my: 'left center',
-        at: 'right center'
+/*function httpGetAsync(url, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", url, true);
+        xmlHttp.send(null);
     }
-});
+}*/
+
+$(document)
+    .ready(function () {
+        //console.log(document.getElementById("TakenSeatsData").innerText);
+        var array = jQuery.parseJSON(document.getElementById("TakenSeatsData").innerText);
+        console.log(array);
+        console.log(array[0].T);
+        for (var i = 0; i < array.length; i++) {
+            if (array[i].B == 1) {
+                img.mapster("set", false, array[i].A);
+                arraySeats[array[i].A].state = "taken";
+                console.log(arraySeats[array[i].A]);
+                img.mapster('set', true, array[i].A, renderOpts[arraySeats[array[i].A].getStateNr()]);
+            }
+            console.log(array[i]);
+        }
+
+
+    });
+
+//QTip2 for map area 
+/*$(document).ready(function () {
+    $('area').each(function() {
+        $(this).qtip({
+            content: {
+                text: $(this).next('.seatToolTip')
+            },
+            position: {
+                my: 'left center',
+                at: 'right center'
+            }
+        });
+    });
+});*/

@@ -6,17 +6,97 @@ using System.Web.Mvc;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Net;
+using System.Timers;
 using Newtonsoft.Json.Linq;
 
 namespace WebProject78.Controllers
 {
+    /*public static class TimerTest {
+        static Timer _timer;
+        static List<DateTime> _l;
+
+        public static List<DateTime> DateList {
+            get {
+                if (_l == null) {
+                    Start();
+                }
+                return _l;
+            }
+        }
+
+        static void Start() {
+            _l = new List<DateTime>();
+            _timer = new Timer(3000);
+
+            _timer.Elapsed += new ElapsedEventHandler(_timer_Elapsed);
+            _timer.Enabled = true;
+        }
+
+        private static void _timer_Elapsed(object sender, ElapsedEventArgs e) {
+            _l.Add(DateTime.Now);
+        }
+    }*/
+
     public class HomeController : Controller
     {
+        public void TimerMethod() {
+            Timer timer = new Timer();
+            timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
+            timer.Interval = 5000;
+            timer.Enabled = true;
+        }
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
+            List<Tuple<string, string, string, string, string, string>> seats = new List<Tuple<string, string, string, string, string, string>>();
+
+            WebClient c = new WebClient();
+            var data = c.DownloadString("http://145.24.222.188/p/index.php/arduinocheck");
+
+            JObject dataJObject = JObject.Parse(data);
+            JArray dataArray = (JArray)dataJObject["data"];
+
+            foreach (JToken t in dataArray) {
+                seats.Add(Tuple.Create(t["A"].ToString(), t["T"].ToString(), t["B"].ToString(), t["U"].ToString(), t["Te"].ToString(), t["L"].ToString()));
+            }
+
+            var userid = seats.Select(t => t.Item2).ToList();
+
+            ViewBag.takenSeats = userid;
+        }
+
+        private void alternateGetSeats() {
+            List<Tuple<string, string, string, string, string, string>> seats = new List<Tuple<string, string, string, string, string, string>>();
+
+            WebClient c = new WebClient();
+            var data = c.DownloadString("http://145.24.222.188/p/index.php/arduinocheck");
+
+            JObject dataJObject = JObject.Parse(data);
+            JArray dataArray = (JArray)dataJObject["data"];
+
+            foreach (JToken t in dataArray) {
+                seats.Add(Tuple.Create(t["A"].ToString(), t["T"].ToString(), t["B"].ToString(), t["U"].ToString(), t["Te"].ToString(), t["L"].ToString()));
+            }
+
+            //var userid = seats.Select(t => t.Item2).ToList();
+
+            ViewBag.takenSeats = dataArray;
+        }
+
+        //Doesn't work
+        /*[System.Web.Services.WebMethod]
+        public static String SeatsDataJObject() {
+            WebClient c = new WebClient();
+            var data = c.DownloadString("http://145.24.222.188/p/index.php/arduinocheck");
+            return JObject.Parse(data).ToString();
+        }*/
+
         public ActionResult Index()
         {
 
             ViewBag.Title = "Project 78";
             employeeList();
+            alternateGetSeats();
+            //TimerMethod();
 
             return View();
         }

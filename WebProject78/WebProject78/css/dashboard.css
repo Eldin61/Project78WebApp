@@ -14,6 +14,10 @@
     width:100%;
 }
 
+.seatToolTip {
+    display: none;
+}
+
 ::-webkit-scrollbar {
     width: 12px;
 }
