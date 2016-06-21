@@ -296,14 +296,17 @@ $(document)
         var array = jQuery.parseJSON(document.getElementById("TakenSeatsData").innerText);
         console.log(array);
         console.log(array[0].T);
+        console.log(array.length);
         for (var i = 0; i < array.length; i++) {
-            if (array[i].B == 1) {
-                img.mapster("set", false, array[i].A);
-                arraySeats[array[i].A].state = "taken";
-                console.log(arraySeats[array[i].A]);
-                img.mapster('set', true, array[i].A, renderOpts[arraySeats[array[i].A].getStateNr()]);
+            if (parseInt(array[i].B) == 1) {
+                var arraynumber = parseInt(array[i].A);
+                console.log("number" + arraynumber);
+                img.mapster("set", false, String(arraynumber));
+                arraySeats[arraynumber].state = "taken";
+                console.log(arraySeats[arraynumber]);
+                img.mapster('set', true, String(arraynumber), renderOpts[arraySeats[arraynumber].getStateNr()]);
             }
-            console.log(array[i]);
+            console.log("array" + array[i]);
         }
 
 
